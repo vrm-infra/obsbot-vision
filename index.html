@@ -4,7 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>Darpan</title>
+  <title>ObsVision - unofficial OBSBOT Meet SE controls for Linux, in your browser</title>
+  <meta name="description" content="ObsVision is an unofficial web page to control the OBSBOT Meet SE webcam on Linux: zoom, focus, exposure, white balance, and with a small helper auto framing, HDR and gestures. Not affiliated with OBSBOT.">
+  <link rel="canonical" href="https://vrm-infra.github.io/obsbot-vision/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ObsVision">
+  <meta property="og:title" content="ObsVision - unofficial OBSBOT Meet SE controls for Linux">
+  <meta property="og:description" content="Control the OBSBOT Meet SE in your browser on Linux. Unofficial, not affiliated with OBSBOT.">
+  <meta property="og:url" content="https://vrm-infra.github.io/obsbot-vision/">
+  <meta property="og:image" content="https://vrm-infra.github.io/obsbot-vision/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The ObsVision control page in dark mode with the camera setup screen.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ObsVision - unofficial OBSBOT Meet SE controls for Linux">
+  <meta name="twitter:description" content="Control the OBSBOT Meet SE in your browser on Linux. Unofficial, not affiliated with OBSBOT.">
+  <meta name="twitter:image" content="https://vrm-infra.github.io/obsbot-vision/og.png">
+  <meta name="twitter:image:alt" content="The ObsVision control page in dark mode with the camera setup screen.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <script>
     (() => {
@@ -24,7 +40,7 @@
   </script>
   <style>
     /* =====================================================================
-       OBSBOT Meet SE v2 — "Neel-Darpan" (Jodhpur Blue-City & Indigo Atelier)
+       OBSBOT Meet SE v2 — "Neel" (Jodhpur Blue-City & Indigo Atelier)
        Palette tokens rooted in Indian indigo craft:
          Light ("Jodhpur Subah"): Chuna Neel limewash, Surma white,
            Jaipur wash, Bengal Neel ink, Mughal Lajward lapis, Mayur peacock,
@@ -321,8 +337,7 @@
       font-family: var(--font-ui);
       font-size: 0.96rem;
       font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+      letter-spacing: 0.04em;
       line-height: 1.05;
       color: var(--ink);
       white-space: nowrap;
@@ -388,8 +403,7 @@
       border-color: var(--err);
     }
 
-    /* The public page says what it is, in the header and at the end of the settings. The site build sets data-hosted. */
-    :root[data-hosted] .brand-sub::before { content: "Unofficial \00b7  "; }
+    /* The page says what it is in the header, and the hosted page also at the end of the settings. The site build sets data-hosted. */
     .site-note { display: none; margin: 14px 2px 4px; font-size: 0.72rem; line-height: 1.45; color: var(--ink-muted); }
     :root[data-hosted] .site-note { display: block; }
 
@@ -423,6 +437,11 @@
     .helper-hint[hidden] { display: none; }
     :root[data-view="full"] .helper-hint { display: none; }
     .helper-hint-text { margin: 0; }
+    /* Quiet link to the release downloads, only on the hosted page (the helper does not serve it). */
+    .dl-link { display: none; font-size: 0.74rem; line-height: 1.4; color: var(--ink-muted); text-decoration: underline; text-underline-offset: 2px; }
+    .dl-link:hover, .dl-link:focus-visible { color: var(--accent); }
+    :root[data-hosted] .dl-link { display: block; width: fit-content; }
+    .wl-panel .dl-link { margin-top: -2px; }
     .helper-hint-cmd { display: flex; align-items: center; gap: 8px; min-width: 0; }
     .helper-hint code {
       flex: 1 1 auto;
@@ -1047,7 +1066,7 @@
        Jharokha Viewfinder Stage
        ===================================================================== */
 
-    /* ---------- Cohesive Darpan Preview Frame ---------- */
+    /* ---------- Cohesive Preview Frame ---------- */
     /* The preview box always has the aspect ratio of the stream: --ar is set from the stream by the script
        (16:9 with no stream). The frame is as wide as the column allows and no taller than the height cap. */
     :root { --frame-pad: 24px; }
@@ -1061,7 +1080,7 @@
       margin-inline: auto;
     }
 
-    .viewport-frame.darpan-frame {
+    .viewport-frame.vision-frame {
       position: relative;
       width: 100%;
       padding: 12px;
@@ -1073,7 +1092,7 @@
       flex-direction: column;
     }
 
-    .darpan-frame .viewport-inner {
+    .vision-frame .viewport-inner {
       position: relative;
       z-index: 1;
       width: 100%;
@@ -1217,7 +1236,7 @@
     }
 
     /* ---------- View Mode Integration (Theater, Tall Default, Full) ---------- */
-    :root[data-view="theater"] .viewport-frame.darpan-frame {
+    :root[data-view="theater"] .viewport-frame.vision-frame {
       background: var(--surface);
       border-radius: var(--r-lg);
       overflow: visible;
@@ -1235,12 +1254,12 @@
       margin-inline: auto;
     }
 
-    :root[data-view="theater"] .darpan-frame .viewport-inner {
+    :root[data-view="theater"] .vision-frame .viewport-inner {
       border-radius: var(--r-sm);
     }
 
     /* Full view hides the frame so video runs edge-to-edge under floating HUDs */
-    :root[data-view="full"] .viewport-frame.darpan-frame {
+    :root[data-view="full"] .viewport-frame.vision-frame {
       padding: 0;
       border: 0;
       border-radius: 0;
@@ -1252,7 +1271,7 @@
       display: none;
     }
 
-    :root[data-view="full"] .darpan-frame .viewport-inner {
+    :root[data-view="full"] .vision-frame .viewport-inner {
       width: 100%;
       height: 100%;
       aspect-ratio: auto;
@@ -2945,7 +2964,7 @@
 
       .brand { gap: 9px; }
       .brand-mark { width: 32px; height: 32px; }
-      .brand-name { font-size: 0.88rem; letter-spacing: 0.14em; }
+      .brand-name { font-size: 0.88rem; letter-spacing: 0.04em; }
       .brand-fw { display: none; }
       .brand-sub { font-size: 0.68rem; }
 
@@ -3088,7 +3107,7 @@
     @media (max-width: 380px) {
       .brand-name {
         font-size: 0.82rem;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.03em;
       }
 
       .brand-sub {
@@ -3186,7 +3205,7 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 620px;
+      max-width: 680px;
       min-height: 100%;
       flex: none;
       display: flex;
@@ -3267,10 +3286,9 @@
     .wl-wordmark {
       font-size: 0.84rem;
       font-weight: 700;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color: var(--ink);
-      padding-left: 0.24em;
+      padding-left: 0.08em;
       line-height: 1;
     }
 
@@ -3322,7 +3340,7 @@
 
     .wl-cmd-box {
       width: 100%;
-      max-width: 600px;
+      max-width: 680px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -3413,7 +3431,7 @@
     .wl-full-title { font-weight: 600; color: var(--ok); }
     .wl-full-sep { color: var(--ink-muted); }
     .wl-full-meta { color: var(--ink-muted); font-weight: 500; }
-    .wl-legal { margin: 2px 0 0; font-size: 0.72rem; line-height: 1.3; color: var(--ink-muted); letter-spacing: 0.01em; }
+    .wl-legal { margin: 4px 0 0; font-size: 0.8rem; font-weight: 600; line-height: 1.3; color: var(--ink); letter-spacing: 0.01em; }
 
     @media (prefers-reduced-motion: no-preference) {
       .wl-stage { transition: opacity 420ms var(--ease-spring), transform 520ms var(--ease-spring); }
@@ -3477,7 +3495,7 @@
     <!-- ==================== SLIM TOPBAR ==================== -->
     <header class="topbar">
       <div class="brand">
-        <!-- Darpan Mark: 4-Blade Lotus-Aperture (2 tokens: --accent + --brass) -->
+        <!-- ObsVision Mark: 4-Blade Lotus-Aperture (2 tokens: --accent + --brass) -->
         <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
           <g class="brand-mark-arch">
             <path d="M15.8 13.4 V4.8 C17.4 3.6 18.8 2.8 20 2.0 C22.0 3.3 25.0 4.6 28.4 6.6 C31.4 8.4 33.2 10.8 34.1 13.4 H24.2 A7.82 7.82 0 0 0 15.8 13.4 Z"/>
@@ -3489,10 +3507,10 @@
         </svg>
         <div class="brand-lockup">
           <div class="brand-row">
-            <h1 class="brand-name">Darpan</h1>
+            <h1 class="brand-name">ObsVision</h1>
             <span class="brand-fw" id="hdr-fw"></span>
           </div>
-          <p class="brand-sub">for OBSBOT Meet SE</p>
+          <p class="brand-sub">Unofficial · for OBSBOT Meet SE</p>
         </div>
       </div>
 
@@ -3529,7 +3547,7 @@
       <!-- Preview Stage + Quick 1-Tap Controls + Profiles -->
       <section class="stage-col" aria-label="Camera preview and quick controls">
         <div class="jharokha">
-          <div class="viewport-frame darpan-frame">
+          <div class="viewport-frame vision-frame">
           <!-- Cohesive inlaid zari-brass perimeter (lives strictly in the 12px bezel) -->
           <div class="df-chrome" aria-hidden="true">
             <svg class="df-corner df-corner--tl" viewBox="0 0 44 44" fill="none">
@@ -3657,7 +3675,7 @@
               </div>
 
               <!-- Welcome screen: shown before the camera stream starts (see section 12c) -->
-              <div id="wl-stage" class="wl-stage" hidden data-wl-state="first-visit" data-wl-active="false" role="region" aria-label="Darpan camera setup">
+              <div id="wl-stage" class="wl-stage" hidden data-wl-state="first-visit" data-wl-active="false" role="region" aria-label="ObsVision camera setup">
                 <!-- Architectural Jharokha Mirror Arch Backdrop (inline SVG, decorative) -->
                 <div class="wl-backdrop" aria-hidden="true">
                   <div class="wl-sheen"></div>
@@ -3674,7 +3692,7 @@
 
                 <!-- Foreground Welcome Composition -->
                 <div class="wl-content">
-                  <!-- 1. Concentric Optical Medallion + Approved Darpan Wordmark -->
+                  <!-- 1. Concentric Optical Medallion + Approved ObsVision Wordmark -->
                   <div class="wl-brand">
                     <div class="wl-medallion" aria-hidden="true">
                       <!-- Concentric Rangoli & optical calibration rings anchored to medallion center -->
@@ -3703,7 +3721,7 @@
                       </svg>
 
                       <span class="wl-medallion-halo"></span>
-                      <!-- Approved 4-Blade Lotus-Aperture Darpan Mark -->
+                      <!-- Approved 4-Blade Lotus-Aperture ObsVision Mark -->
                       <svg class="wl-mark" viewBox="0 0 40 40" fill="none">
                         <g class="wl-mark-blades">
                           <path d="M15.8 13.4 V4.8 C17.4 3.6 18.8 2.8 20 2.0 C22.0 3.3 25.0 4.6 28.4 6.6 C31.4 8.4 33.2 10.8 34.1 13.4 H24.2 A7.82 7.82 0 0 0 15.8 13.4 Z"/>
@@ -3718,7 +3736,7 @@
 
                     <div class="wl-wordmark-row">
                       <span class="wl-hairline" aria-hidden="true"></span>
-                      <span class="wl-wordmark">Darpan</span>
+                      <span class="wl-wordmark">ObsVision</span>
                       <span class="wl-hairline" aria-hidden="true"></span>
                     </div>
                   </div>
@@ -3753,7 +3771,7 @@
                       <p class="wl-helper-note">Auto framing, HDR, gestures, and audio need the free Linux helper:</p>
                       <div class="wl-cmd-box">
                         <span class="wl-cmd-prompt" aria-hidden="true">$</span>
-                        <code class="wl-cmd-code" id="wl-cmd-code" tabindex="0">curl -fsSL https://vrm-infra.github.io/darpan/install.sh | sh</code>
+                        <code class="wl-cmd-code" id="wl-cmd-code" tabindex="0">curl -fsSL https://vrm-infra.github.io/obsbot-vision/install.sh | sh</code>
                         <button type="button" class="wl-copy-btn" id="wl-btn-copy" aria-label="Copy install command">
                           <svg class="wl-copy-ico wl-copy-ico--copy" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                             <rect x="5.5" y="5.5" width="8" height="8" rx="1.6" stroke="currentColor" stroke-width="1.4"/>
@@ -3765,6 +3783,7 @@
                           <span class="wl-copy-label" id="wl-copy-label">Copy</span>
                         </button>
                       </div>
+                      <a class="dl-link" href="https://github.com/vrm-infra/obsbot-vision/releases/latest" target="_blank" rel="noopener" title="Debian/Ubuntu .deb packages and static binaries for x86_64 and ARM">Other downloads</a>
                     </div>
 
                     <!-- State (b): Permission denied recovery steps -->
@@ -3897,12 +3916,13 @@
             <button type="button" class="deck-toggle-all" id="btn-toggle-all">Expand all</button>
           </div>
 
-          <aside class="helper-hint" id="helper-hint" aria-label="Darpan helper" hidden>
-            <p class="helper-hint-text">Browser mode shows the controls this camera offers the browser. For auto framing, HDR, gestures, audio and profiles, install the Darpan helper:</p>
+          <aside class="helper-hint" id="helper-hint" aria-label="ObsVision helper" hidden>
+            <p class="helper-hint-text">Browser mode shows the controls this camera offers the browser. For auto framing, HDR, gestures, audio and profiles, install the ObsVision helper:</p>
             <div class="helper-hint-cmd">
-              <code id="helper-cmd">curl -fsSL https://vrm-infra.github.io/darpan/install.sh | sh</code>
+              <code id="helper-cmd">curl -fsSL https://vrm-infra.github.io/obsbot-vision/install.sh | sh</code>
               <button type="button" class="btn-ghost" id="btn-copy-cmd">Copy</button>
             </div>
+            <a class="dl-link" href="https://github.com/vrm-infra/obsbot-vision/releases/latest" target="_blank" rel="noopener" title="Debian/Ubuntu .deb packages and static binaries for x86_64 and ARM">Other downloads</a>
             <button type="button" class="helper-hint-close" id="btn-hint-close" aria-label="Dismiss this hint">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </button>
@@ -4616,7 +4636,7 @@
             </article>
           </div>
 
-          <p class="site-note" id="site-note">Darpan is an independent, unofficial project. It is not affiliated with, endorsed by or supported by OBSBOT. OBSBOT and Meet SE are trademarks of their owners, named here only to say which camera this works with.</p>
+          <p class="site-note" id="site-note">ObsVision is an independent, unofficial project. It is not affiliated with, endorsed by or supported by OBSBOT. OBSBOT and Meet SE are trademarks of their owners, named here only to say which camera this works with.</p>
         </div>
       </section>
     </main>
@@ -5022,7 +5042,7 @@
            It has the same five methods and returns the same shapes, so the cards, locks and reset stay shared.
            Everything the browser has no control for is flagged `helper_only` in the features list.
            --------------------------------------------------------------- */
-        const NEEDS_HELPER = 'Needs the Darpan helper';
+        const NEEDS_HELPER = 'Needs the ObsVision helper';
         // Feature ids with a browser control. Every other feature needs the helper.
         const BROWSER_FEATURES = ['zoom', 'pan', 'tilt', 'center', 'focus_mode', 'focus', 'exposure_mode', 'exposure',
           'exposure_compensation', 'white_balance_mode', 'white_balance', 'brightness', 'contrast', 'saturation', 'sharpness'];
@@ -5365,7 +5385,7 @@
          =================================================================== */
 
       const HELPER_URL = 'http://127.0.0.1:8737';
-      const NEEDS_HELPER_TEXT = 'Needs the Darpan helper';
+      const NEEDS_HELPER_TEXT = 'Needs the ObsVision helper';
       const PROBE_MS = 1500;
 
       // ?helper=http://127.0.0.1:9000 points the page at a helper on another port. Only a loopback address is accepted.
@@ -5466,6 +5486,18 @@
 
       function storeGet(key) {
         try { return localStorage.getItem(key); } catch { return null; }
+      }
+
+      // The page was called Darpan before; a setting saved under the old key moves to the new key once.
+      function migrateKey(oldKey, newKey) {
+        try {
+          const old = localStorage.getItem(oldKey);
+          if (old !== null) {
+            if (localStorage.getItem(newKey) === null) localStorage.setItem(newKey, old);
+            localStorage.removeItem(oldKey);
+          }
+        } catch {}
+        return newKey;
       }
 
       function syncSliderVars(el) {
@@ -7416,8 +7448,8 @@
          12c. Welcome Screen (before the camera stream starts)
          =================================================================== */
 
-      const INSTALL_CMD = 'curl -fsSL https://vrm-infra.github.io/darpan/install.sh | sh';
-      const CAM_KEY = 'darpan-cam-ok'; // set once the preview ran; stands in for the permission where the browser cannot tell
+      const INSTALL_CMD = 'curl -fsSL https://vrm-infra.github.io/obsbot-vision/install.sh | sh';
+      const CAM_KEY = migrateKey('darpan-cam-ok', 'obsbot-vision-cam-ok'); // set once the preview ran; stands in for the permission where the browser cannot tell
 
       // ?welcome=first|denied|nocam|granted runs the real welcome logic in the demo against a pretend camera and permission.
       // The page checks change `welcomeMock` (perm, devices) while they run, as a user changes the browser setting.
@@ -7462,7 +7494,7 @@
         const copyLabel = $('#wl-copy-label');
         const status = $('#wl-live-status');
         const COPY = {
-          'first-visit': { h: 'Control your OBSBOT Meet SE in the browser.', d: '', cta: 'Allow camera', say: 'Darpan is ready. Select Allow camera to start.' },
+          'first-visit': { h: 'Control your OBSBOT Meet SE in the browser.', d: '', cta: 'Allow camera', say: 'ObsVision is ready. Select Allow camera to start.' },
           'helper-ready': { h: 'Control your OBSBOT Meet SE in the browser.', d: '', cta: 'Allow camera', say: 'Full mode is ready: the Linux helper was found. Select Allow camera to start.' },
           denied: { h: 'Camera access is blocked.', d: 'Allow camera permission in your browser to open the live preview.', cta: 'Try again', say: 'Camera access is blocked. Allow the camera in the browser site settings, then try again.' },
           'no-camera': { h: 'No camera found.', d: 'Connect your OBSBOT Meet SE and check again.', cta: 'Check again', say: 'No camera found. Connect your OBSBOT Meet SE and select Check again.' },
@@ -7610,7 +7642,7 @@
          =================================================================== */
 
       // The controls a browser can drive. A control of this list shows only when the camera reports it.
-      // Every other control needs the helper: it stays, dimmed, with the tip "Needs the Darpan helper".
+      // Every other control needs the helper: it stays, dimmed, with the tip "Needs the ObsVision helper".
       const BROWSER_CTLS = ['zoom', 'ptz', 'focus_mode', 'focus', 'exposure_mode', 'exposure', 'exposure_compensation',
         'white_balance_mode', 'white_balance', 'brightness', 'contrast', 'saturation', 'sharpness'];
       const CTL_FEATURES = { ptz: ['pan', 'tilt'] };
@@ -7697,7 +7729,7 @@
       }
 
       // The helper hint: one small card above the settings, only in browser mode, gone for good once dismissed.
-      const HINT_KEY = 'darpan-hint-dismissed';
+      const HINT_KEY = migrateKey('darpan-hint-dismissed', 'obsbot-vision-hint-dismissed');
       const hintEl = $('#helper-hint');
       // Before the preview runs, the welcome screen holds the install line, so the hint waits (one place at a time).
       // A dismissed hint comes back for the rest of the visit when the user taps a control that needs the helper.
@@ -7855,7 +7887,7 @@
       // Demo mode only: the page checks (tools/check-page.js) reach the adapters, the detection and the reset plan through this.
       if (api.isMock) {
         window.__test = {
-          api, wl, welcomeMock, needsWelcome, undoPlan, detectMode, probeHelper, helperUrlFrom, zoomLabel, switchToHelper, updateHint,
+          api, wl, welcomeMock, needsWelcome, migrateKey, undoPlan, detectMode, probeHelper, helperUrlFrom, zoomLabel, switchToHelper, updateHint,
           idle: () => !api.busy() && state.timers.size === 0 && !resetBusy,
         };
       }

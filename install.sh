@@ -1,24 +1,24 @@
 #!/bin/sh
-# Install the Darpan helper (the `obsbot` binary) for your user. No sudo, no root.
+# Install the ObsVision helper (the `obsbot` binary) for your user. No sudo, no root.
 #
-#   curl -fsSL https://vrm-infra.github.io/darpan/install.sh | sh
-#   curl -fsSL https://vrm-infra.github.io/darpan/install.sh | sh -s -- --uninstall
+#   curl -fsSL https://vrm-infra.github.io/obsbot-vision/install.sh | sh
+#   curl -fsSL https://vrm-infra.github.io/obsbot-vision/install.sh | sh -s -- --uninstall
 #
-# It downloads the binary for your CPU from the latest release of vrm-infra/darpan,
+# It downloads the binary for your CPU from the latest release of vrm-infra/obsbot-vision,
 # checks its SHA-256 against the release's SHA256SUMS, installs it to ~/.local/bin/obsbot
 # and starts it at login as a systemd user service on http://127.0.0.1:8737.
 #
-# Test hook: DARPAN_BASE_URL replaces the release download URL.
+# Test hook: OBSBOT_VISION_BASE_URL replaces the release download URL.
 set -eu
 
-REPO="vrm-infra/darpan"
-PAGE="https://vrm-infra.github.io/darpan/"
-BASE="${DARPAN_BASE_URL:-https://github.com/$REPO/releases/latest/download}"
+REPO="vrm-infra/obsbot-vision"
+PAGE="https://vrm-infra.github.io/obsbot-vision/"
+BASE="${OBSBOT_VISION_BASE_URL:-https://github.com/$REPO/releases/latest/download}"
 BIN_DIR="$HOME/.local/bin"
 BIN="$BIN_DIR/obsbot"
 
 say() { printf '%s\n' "$*"; }
-die() { printf 'darpan: %s\n' "$*" >&2; exit 1; }
+die() { printf 'obsbot-vision: %s\n' "$*" >&2; exit 1; }
 
 usage() {
     say "Usage: install.sh [--uninstall]"
